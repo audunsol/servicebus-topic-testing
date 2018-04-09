@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace service_bus_testing
 {
-    public class SenderService
+    public class Publisher
     {
         private readonly TopicClient _topicClient;
         private readonly IConfig _config;
 
-        public SenderService(IConfig config)
+        public Publisher(IConfig config)
         {
             _config = config;
             var connectionStringBuilder = new ServiceBusConnectionStringBuilder(config.TopicConnectionString);

@@ -14,7 +14,7 @@ namespace service_bus_testing
         {
             var config = new Config();
 
-            var sender = new SenderService(config);
+            var publisher = new Publisher(config);
             var subscriptionA = new Subscriber(config, config.SubscriptionNameA, config.FilterPropA);
             var subscriptionB = new Subscriber(config, config.SubscriptionNameB, config.FilterPropB);
 
@@ -23,11 +23,11 @@ namespace service_bus_testing
             Console.WriteLine("======================================================");
 
             // Send messages:
-            await sender.SendMessagesAsync(10);
+            await publisher.SendMessagesAsync(10);
 
             Console.ReadKey();
 
-            await sender.CloseAsync();
+            await publisher.CloseAsync();
             await subscriptionA.CloseAsync();
             await subscriptionB.CloseAsync();
         }
