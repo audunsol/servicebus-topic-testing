@@ -1,5 +1,4 @@
-﻿using Microsoft.Azure.Management.ServiceBus;
-using Microsoft.Azure.ServiceBus;
+﻿using Microsoft.Azure.ServiceBus;
 using System;
 using System.Linq;
 using System.Text;
@@ -33,33 +32,43 @@ namespace service_bus_testing
 
         public async Task SetupSubscriptionRules()
         {
+            var subscriptionRuleName = _subscriptionName + "-rule";
+            var newRule = CreateNewRuleDescription(subscriptionRuleName);
+
             var exitstingRules = await _subscriptionClient.GetRulesAsync();
 
-            var subscriptionRuleName = _subscriptionName + "-rule";
 
             if (exitstingRules != null)
             {
-
                 exitstingRules
-                    .Where(r => r.Name != subscriptionRuleName)
+                    .Where(r => !CompareRules(r, newRule))
                     .ToList()
                     .ForEach(async r => await _subscriptionClient.RemoveRuleAsync(r.Name));
-                
-                if (exitstingRules.Any(r => r.Name == subscriptionRuleName))
+
+                if (exitstingRules.Any(r => CompareRules(r, newRule)))
                 {
                     return;
                 }
             }
 
+            await _subscriptionClient.AddRuleAsync(newRule);
+        }
+
+        private bool CompareRules(RuleDescription oldRule, RuleDescription newRule)
+        {
+            return oldRule.Name == newRule.Name && oldRule.Filter.ToString() == newRule.Filter.ToString();
+        }
+
+        private RuleDescription CreateNewRuleDescription(string subscriptionRuleName)
+        {
             var corrFilter = new CorrelationFilter();
-            corrFilter.Properties.Add(_filterProperty, true);
+            corrFilter.Properties.Add(_filterProperty, "true");
             var rule = new RuleDescription
             {
                 Filter = corrFilter,
                 Name = subscriptionRuleName
             };
-
-            await _subscriptionClient.AddRuleAsync(rule);
+            return rule;
         }
 
         public async Task CloseAsync()

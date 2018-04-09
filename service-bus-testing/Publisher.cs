@@ -1,6 +1,5 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,16 +29,16 @@ namespace service_bus_testing
 
                     if (i % 2 == 0)
                     {
-                        message.UserProperties.Add(_config.FilterPropA, true);
+                        message.UserProperties.Add(_config.FilterPropA, "true");
                     }
                     else
                     {
-                        message.UserProperties.Add(_config.FilterPropB, true);
+                        message.UserProperties.Add(_config.FilterPropB, "true");
                     }
 
                     if (i % 4 == 0)
                     {
-                        message.UserProperties.Add(_config.FilterPropB, true);
+                        message.UserProperties.Add(_config.FilterPropB, "true");
                     }
 
                     // Write the body of the message to the console.
