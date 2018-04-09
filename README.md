@@ -18,6 +18,6 @@ To run the sample, you must first (from the Azure Portal, or whatever tool that 
 1. add a shared access policy on the topic, with Send and Listen checked
 1. copy one of the connectionstrings from this policy
 
-When subscriptions are added through the portal, they have the default TrueFilter set. The subscriber class initialization code will remove this, and put on a correlation filter based on the filter property from the config instead. Note that if you would like to change the filter, you must update the filter name, else it will be left untouched (I don't want to mess around with the subscription filter rules for every execution, but clearly, this could have been done better...)
+When subscriptions are added through the portal, they have the default TrueFilter set. The subscriber class initialization code will remove this, and put on a correlation filter based on the filter property from the config instead.
 
 Then, fill inn the corresponding connectionstrings and subscription names in appSettings.json (or preferrably in an environment specific file, e.g. appSettings.Development.json, that will be ignored by .gitignore setting).
